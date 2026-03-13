@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+
+  flask:
+    build: .
+    ports:
+      - "5100:5000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: flaskuser
+      DB_PASSWORD: flaskpass
+      DB_NAME: flaskdb
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: flaskdb
+      MYSQL_USER: flaskuser
+      MYSQL_PASSWORD: flaskpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+
